@@ -47,27 +47,30 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
   }
 
-  "mkstream" should "have lots of laziness" in {
+  "mkIterator" should "have lots of laziness" in {
 
-    val numbers = MkStream(506, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten").toIterator
-
-    for (i <- 1 to 10)
+    val numbers = MkIterator(506, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+    for (_ <- 1 to 10)
       println(s"iter saw ${numbers.next()}")
+
+    val s = MkIterator(506, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten")
+    for (_ <- 1 to 100)
+      println(s"infinite saw ${s.next()}")
 
   }
 
   "iot" should "have type" in {
 
-    val deviceIds = MkStream(103, "11-000202", "11-000203", "22-000100")
-    val types = MkStream(206, "observation", "error", "heartbeat")
+    val deviceIds = MkIterator(103, "11-000202", "11-000203", "22-000100")
+    val types = MkIterator(206, "observation", "error", "heartbeat")
 
     val gfile: URL = getClass.getResource("/iotjson.stg")
     val group = new STGroupFile(gfile, "UTF8", '<', '>')
 
     val st = group.getInstanceOf("decl")
 
-    st.add("type", types.take(1).head)
-    st.add("deviceId", deviceIds.take(1).head)
+    st.add("type", types.next())
+    st.add("deviceId", deviceIds.next())
 
     val result = st.render
     println(s"result:\n$result")

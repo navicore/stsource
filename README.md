@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/navicore/stsource.svg?branch=master)](https://travis-ci.org/navicore/stsource)
+
 A StringTemplate4 Akka Streams source producing template driven test data
 ------
 

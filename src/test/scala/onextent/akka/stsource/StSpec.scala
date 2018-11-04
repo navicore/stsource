@@ -63,6 +63,8 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
     val deviceIds = MkIterator(103, "11-000202", "11-000203", "22-000100")
     val types = MkIterator(206, "observation", "error", "heartbeat")
+    val modules = MkIterator(206, "m1", "m2", "m3")
+    val values = MkIterator(206, "20.1", "20.2", "20.3")
 
     val gfile: URL = getClass.getResource("/iotjson.stg")
     val group = new STGroupFile(gfile, "UTF8", '<', '>')
@@ -71,12 +73,13 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
     st.add("type", types.next())
     st.add("deviceId", deviceIds.next())
+    st.add("module", modules.next())
+    st.add("value", values.next())
 
     val result = st.render
     println(s"result:\n$result")
 
-    val expected = """{"type": "observation", "deviceId": "11-000202"}"""
-
+    val expected = """{"type": "observation", "deviceId": "11-000202", "module": "m1", "value": 20.1}"""
     assert(expected == result)
 
   }

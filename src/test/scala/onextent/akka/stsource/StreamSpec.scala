@@ -40,8 +40,12 @@ class StreamSpec extends FlatSpec with Matchers {
     implicit val cfg: StConfig =
       StConfig(100,
                stgUrl,
-               Map(("type", List("observation", "error", "heartbeat")),
-                   ("deviceId", List("d1", "d2", "d3", "d4"))))
+               Map(
+                 ("type", List("observation", "error", "heartbeat")),
+                 ("deviceId", List("d1", "d2", "d3", "d4")),
+                 ("module", List("temp1", "temp2", "waterLvl1")),
+                 ("value", List("24.0", "20.8", "19.0", "68.1"))
+               ))
 
     val connector: ActorRef = actorSystem.actorOf(StConnector.props)
 

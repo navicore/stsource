@@ -1,3 +1,5 @@
-decl(type, deviceId) ::= "{<initType(type)>, <initDeviceId(deviceId)>}"
+decl(type, deviceId, module, value) ::= "{<initType(type)>, <initDeviceId(deviceId)>, <initModule(module)>, <initValue(value)>}"
 initType(v) ::= "<if(v)>\"type\": \"<v>\"<endif>"
 initDeviceId(v) ::= "<if(v)>\"deviceId\": \"<v>\"<endif>"
+initModule(v) ::= "<if(v)>\"module\": \"<v>\"<endif>"
+initValue(v) ::= "<if(v)>\"value\": <v><endif>"

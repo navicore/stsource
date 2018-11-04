@@ -1,24 +1,35 @@
 package onextent.akka.stsource
 
-import java.io.{BufferedReader, InputStreamReader, StringBufferInputStream}
+import org.stringtemplate.v4.{ST, STGroupFile}
 
 class StReader()(implicit cfg: StConfig) {
 
   def read(): Iterator[String] = {
 
-    val gis= new StringBufferInputStream("""{"ha": "ha"}""")
-    val decoder = new InputStreamReader(gis, "UTF8")
+    class LineIterator(implicit cfg: StConfig) extends Iterator[String] {
 
-    val b = new BufferedReader(decoder)
+      val group = new STGroupFile(cfg.stgUrl, "UTF8", '<', '>')
+      val streams: Map[String, Iterator[String]] =
+        cfg.validSets.map(
+          s =>
+            (s._1,
+             if (cfg.reproducible) MkIterator(1234, s._2: _*)
+             else MkIterator(s._2: _*)))
 
-    class LineIterator(b: BufferedReader) extends Iterator[String] {
+      var count = 0
 
-      override def hasNext: Boolean = b.ready()
+      override def hasNext: Boolean = cfg.size == 0 || count < cfg.size
 
-      override def next(): String = b.readLine()
+      override def next(): String = {
+        count = count + 1
+        val st: ST = group.getInstanceOf("decl")
+        streams.foreach(s => st.add(s._1, s._2.next()))
+        st.render()
+      }
+
     }
 
-    new LineIterator(b)
+    new LineIterator()
 
   }
 

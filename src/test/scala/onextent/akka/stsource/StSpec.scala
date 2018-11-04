@@ -80,4 +80,5 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
     assert(expected == result)
 
   }
+
 }

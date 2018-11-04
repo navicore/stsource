@@ -29,8 +29,15 @@ Create a config, a connector, and a source via the example below.
     ...
     ...
     ...
-    implicit val cfg: StConfig = StConfig()
+    val stgUrl: URL = getClass.getResource("/iotjson.stg")
+    implicit val cfg: StConfig =
+      StConfig(100,
+               stgUrl,
+               Map(("type", List("observation", "error", "heartbeat")),
+                   ("deviceId", List("d1", "d2", "d3", "d4"))))
+
     val connector: ActorRef = actorSystem.actorOf(StConnector.props)
+
     val src = StSource(connector)
     ...
     ...

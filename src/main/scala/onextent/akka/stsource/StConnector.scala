@@ -2,7 +2,6 @@ package onextent.akka.stsource
 
 import akka.actor.{Actor, Props}
 import com.typesafe.scalalogging.LazyLogging
-import onextent.akka.naviblob.akka.{NoMore, Pull}
 
 object StConnector extends LazyLogging {
 

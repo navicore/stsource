@@ -1,4 +1,4 @@
-package onextent.akka.naviblob.akka
+package onextent.akka.stsource
 
 import akka.NotUsed
 import akka.actor.{ActorRef, ActorSystem}
@@ -14,12 +14,12 @@ import scala.concurrent.{Await, Future}
 /**
   * Convenience entry point api. Users instantiate this and wire it into their streams.
   */
-object NaviLake {
+object StSource {
 
   def apply(connector: ActorRef)(
       implicit system: ActorSystem,
       to: Timeout): Source[String, NotUsed] =
-    Source.fromGraph(new NaviLake(connector))
+    Source.fromGraph(new StSource(connector))
 
 }
 
@@ -29,13 +29,13 @@ final case class NoMore()
 /**
   * Entry point api. Users instantiate this and wire it into their streams.
   */
-class NaviLake(connector: ActorRef)(
+class StSource(connector: ActorRef)(
     implicit system: ActorSystem,
     to: Timeout)
     extends GraphStage[SourceShape[String]]
     with LazyLogging {
 
-  val out: Outlet[String] = Outlet[String]("NaviLakeSource")
+  val out: Outlet[String] = Outlet[String]("StSource")
 
   override val shape: SourceShape[String] = SourceShape(out)
 
@@ -51,7 +51,7 @@ class NaviLake(connector: ActorRef)(
               case data: String => push(out, data)
               case _: NoMore =>
                 logger.info(
-                  "blob stream is finished. all blobs have been read.")
+                  "ST stream is finished. all data have been read.")
                 completeStage()
               case e => logger.warn(s"pull error: $e", e)
             }

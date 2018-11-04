@@ -1,0 +1,3 @@
+decl(type, deviceId) ::= "{<initType(type)>, <initDeviceId(deviceId)>}"
+initType(v) ::= "<if(v)>\"type\": \"<v>\"<endif>"
+initDeviceId(v) ::= "<if(v)>\"deviceId\": \"<v>\"<endif>"

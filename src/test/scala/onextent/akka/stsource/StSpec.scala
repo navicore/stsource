@@ -8,7 +8,7 @@ import org.stringtemplate.v4.{ST, STGroupFile}
 
 class StSpec extends FlatSpec with Matchers with LazyLogging {
 
-  "hello" should "world" in {
+  "hello" should "have world" in {
 
     val hello = new ST("Hello, <name>")
 
@@ -18,7 +18,7 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
   }
 
-  "group" should "file" in {
+  "group" should "have template" in {
 
     val gfile: URL = getClass.getResource("/test.stg")
     val group = new STGroupFile(gfile, "UTF8", '<', '>')
@@ -33,4 +33,39 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
   }
 
+  "stream" should "have words" in {
+
+    val r = scala.util.Random
+    r.setSeed(5566) // not random
+    val sourceWords = List("one!", "two!", "three", "four")
+
+    def getWord: String = sourceWords(r.nextInt(sourceWords.length))
+
+    lazy val words: Stream[String] = getWord #:: getWord #:: words.zip(words.tail).map { _ => getWord }
+
+    words take 5 foreach println
+
+  }
+
+  "iot" should "have type" in {
+
+    val deviceIds = MkStream(103, "11-000202", "11-000203", "22-000100")
+    val types = MkStream(206, "observation", "error", "heartbeat")
+
+    val gfile: URL = getClass.getResource("/iotjson.stg")
+    val group = new STGroupFile(gfile, "UTF8", '<', '>')
+
+    val st = group.getInstanceOf("decl")
+
+    st.add("type", types.take(1).head)
+    st.add("deviceId", deviceIds.take(1).head)
+
+    val result = st.render
+    println(s"result:\n$result")
+
+    val expected = """{"type": "observation", "deviceId": "11-000202"}"""
+
+    assert(expected == result)
+
+  }
 }

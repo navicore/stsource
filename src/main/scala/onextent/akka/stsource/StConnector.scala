@@ -14,7 +14,7 @@ class StConnector(implicit config: StConfig)
     extends Actor
     with LazyLogging {
 
-  var readerIterator: Iterator[String] = new StReader().read()
+  val readerIterator: Iterator[String] = new StReader().read()
 
   override def receive: Receive = {
 

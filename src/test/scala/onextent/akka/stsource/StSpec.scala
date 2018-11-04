@@ -47,6 +47,15 @@ class StSpec extends FlatSpec with Matchers with LazyLogging {
 
   }
 
+  "mkstream" should "have lots of laziness" in {
+
+    val numbers = MkStream(506, "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten").toIterator
+
+    for (i <- 1 to 10)
+      println(s"iter saw ${numbers.next()}")
+
+  }
+
   "iot" should "have type" in {
 
     val deviceIds = MkStream(103, "11-000202", "11-000203", "22-000100")

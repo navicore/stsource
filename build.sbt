@@ -1,0 +1,93 @@
+name := "stsource"
+organization := "tech.navicore"
+fork := true
+parallelExecution in test := false
+
+version := "0.0.1"
+
+val scala212 = "2.12.7"
+val scala211 = "2.11.12"
+
+crossScalaVersions := Seq(scala212, scala211)
+val akkaVersion = "2.5.17"
+
+publishMavenStyle := true
+
+homepage := Some(url("https://github.com/navicore/stsource"))
+
+scmInfo := Some(ScmInfo(url("https://github.com/navicore/stsource"),
+                            "git@github.com:navicore/stsource.git"))
+
+developers := List(Developer("navicore",
+                             "Ed Sweeney",
+                             "ed@onextent.com",
+                             url("https://github.com/navicore")))
+licenses += ("MIT", url("https://opensource.org/licenses/MIT"))
+
+import ReleaseTransformations._
+
+releaseCrossBuild := true
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value // Use publishSigned in publishArtifacts step
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  publishArtifacts,
+  setNextVersion,
+  commitNextVersion,
+  releaseStepCommand("sonatypeReleaseAll"),
+  pushChanges
+)
+
+credentials += Credentials(Path.userHome / ".sbt" / "pgp.credentials")  
+
+// begin overwrite staging support
+/* publishConfiguration := publishConfiguration.value.withOverwrite(true) */
+/* com.typesafe.sbt.pgp.PgpKeys.publishSignedConfiguration := com.typesafe.sbt.pgp.PgpKeys.publishSignedConfiguration.value.withOverwrite(true) */
+/* publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true) */
+/* com.typesafe.sbt.pgp.PgpKeys.publishLocalSignedConfiguration := com.typesafe.sbt.pgp.PgpKeys.publishLocalSignedConfiguration.value.withOverwrite(true) */
+// end overwrite staging support
+
+
+sonatypeProfileName := "tech.navicore"
+useGpg := true
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
+libraryDependencies ++=
+  Seq(
+
+    "org.antlr" % "stringtemplate" % "4.0.2",
+
+    "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
+
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
+
+    "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+  )
+
+dependencyOverrides ++= Seq(
+  "com.typesafe.akka" %% "akka-actor"  % akkaVersion,
+  "com.typesafe.akka" %% "akka-stream" % akkaVersion
+)
+
+assemblyJarName in assembly := "stsource.jar"
+
+assemblyMergeStrategy in assembly := {
+  case PathList("reference.conf") => MergeStrategy.concat
+  case x if x.endsWith("io.netty.versions.properties") => MergeStrategy.first
+  case PathList("META-INF", _ @ _*) => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+

@@ -37,7 +37,7 @@ Create a config and a source as in the example below.
     ...
     val stgUrl: URL = getClass.getResource("/iotjson.stg")
     implicit val cfg: StConfig =
-      StConfig(100,
+      StConfig(100,                        // 100 lines, use 0 for infinite
                stgUrl,
                Map(
                  ("type", List("observation", "error", "heartbeat")),
@@ -55,26 +55,32 @@ Create a config and a source as in the example below.
     ...
 ```
 
-Above produces:
+Above produces 100 lines like below:
+
+```json
+{"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
+{"type": "heartbeat", "deviceId": "d2", "module": "waterLvl1", "value": 20.8}
+{"type": "error", "deviceId": "d3", "module": "temp2", "value": 19.0}
+{"type": "heartbeat", "deviceId": "d3", "module": "waterLvl1", "value": 19.0}
+{"type": "observation", "deviceId": "d1", "module": "temp1", "value": 24.0}
+{"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
+{"type": "observation", "deviceId": "d1", "module": "temp1", "value": 24.0}
+{"type": "heartbeat", "deviceId": "d4", "module": "waterLvl1", "value": 68.1}
+{"type": "error", "deviceId": "d2", "module": "temp2", "value": 20.8}
+{"type": "heartbeat", "deviceId": "d3", "module": "waterLvl1", "value": 19.0}
+{"type": "error", "deviceId": "d3", "module": "temp2", "value": 19.0}
+{"type": "heartbeat", "deviceId": "d2", "module": "waterLvl1", "value": 20.8}
+{"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
+{"type": "error", "deviceId": "d1", "module": "temp2", "value": 24.0}
+{"type": "observation", "deviceId": "d3", "module": "temp1", "value": 19.0}
+{"type": "heartbeat", "deviceId": "d4", "module": "waterLvl1", "value": 68.1}
+{"type": "error", "deviceId": "d1", "module": "temp2", "value": 24.0}
 ```
-78 sunk {"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
-79 sunk {"type": "heartbeat", "deviceId": "d2", "module": "waterLvl1", "value": 20.8}
-80 sunk {"type": "error", "deviceId": "d3", "module": "temp2", "value": 19.0}
-81 sunk {"type": "heartbeat", "deviceId": "d3", "module": "waterLvl1", "value": 19.0}
-82 sunk {"type": "observation", "deviceId": "d1", "module": "temp1", "value": 24.0}
-83 sunk {"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
-84 sunk {"type": "observation", "deviceId": "d1", "module": "temp1", "value": 24.0}
-85 sunk {"type": "heartbeat", "deviceId": "d4", "module": "waterLvl1", "value": 68.1}
-86 sunk {"type": "error", "deviceId": "d2", "module": "temp2", "value": 20.8}
-87 sunk {"type": "heartbeat", "deviceId": "d3", "module": "waterLvl1", "value": 19.0}
-88 sunk {"type": "error", "deviceId": "d3", "module": "temp2", "value": 19.0}
-89 sunk {"type": "heartbeat", "deviceId": "d2", "module": "waterLvl1", "value": 20.8}
-90 sunk {"type": "error", "deviceId": "d4", "module": "temp2", "value": 68.1}
-91 sunk {"type": "error", "deviceId": "d1", "module": "temp2", "value": 24.0}
-92 sunk {"type": "observation", "deviceId": "d3", "module": "temp1", "value": 19.0}
-93 sunk {"type": "heartbeat", "deviceId": "d4", "module": "waterLvl1", "value": 68.1}
-94 sunk {"type": "error", "deviceId": "d1", "module": "temp2", "value": 24.0}
-```
+
+## TODO
+
+1. support stg file paths in addition to URL.
+2. support abstract stg file sources instead of ST's current requirement of a file path or URL - might require a fork of StringTemplate4.
 
 ## OPS
 

@@ -24,7 +24,7 @@ initModule(v) ::= "<if(v)>\"module\": \"<v>\"<endif>"
 initValue(v) ::= "<if(v)>\"value\": <v><endif>"
 ```
 
-Create a config, a connector, and a source via the example below.
+Create a config and a source as in the example below.
 
 ```scala
     import navicore.akka.stsource._

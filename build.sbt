@@ -3,7 +3,7 @@ organization := "tech.navicore"
 fork := true
 parallelExecution in test := false
 
-version := "0.9.1"
+version := "1.0.0"
 
 val scala212 = "2.12.7"
 val scala211 = "2.11.12"

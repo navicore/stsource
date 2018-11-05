@@ -1,4 +1,4 @@
-package onextent.akka.stsource
+package navicore.akka.stsource
 
 import akka.NotUsed
 import akka.actor.{ActorRef, ActorSystem}
@@ -16,10 +16,10 @@ import scala.concurrent.{Await, Future}
   */
 object StSource {
 
-  def apply(connector: ActorRef)(
-      implicit system: ActorSystem,
+  def apply() (
+      implicit system: ActorSystem, cfg: StConfig,
       to: Timeout): Source[String, NotUsed] =
-    Source.fromGraph(new StSource(connector))
+    Source.fromGraph(new StSource())
 
 }
 
@@ -29,11 +29,13 @@ final case class NoMore()
 /**
   * Entry point api. Users instantiate this and wire it into their streams.
   */
-class StSource(connector: ActorRef)(
-    implicit system: ActorSystem,
+class StSource (
+    implicit system: ActorSystem, cfg: StConfig,
     to: Timeout)
     extends GraphStage[SourceShape[String]]
     with LazyLogging {
+
+  val connector: ActorRef = system.actorOf(StConnector.props)
 
   val out: Outlet[String] = Outlet[String]("StSource")
 

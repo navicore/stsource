@@ -1,4 +1,4 @@
-package onextent.akka.stsource
+package navicore.akka.stsource
 
 import scala.util.Random
 

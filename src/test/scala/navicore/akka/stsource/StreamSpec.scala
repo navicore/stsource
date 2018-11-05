@@ -1,9 +1,9 @@
-package onextent.akka.stsource
+package navicore.akka.stsource
 
 import java.net.URL
 
 import akka.Done
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.ActorSystem
 import akka.stream.scaladsl.Sink
 import akka.stream.{ActorMaterializer, ActorMaterializerSettings}
 import akka.util.Timeout
@@ -38,18 +38,18 @@ class StreamSpec extends FlatSpec with Matchers {
 
     val stgUrl: URL = getClass.getResource("/iotjson.stg")
     implicit val cfg: StConfig =
-      StConfig(100,
-               stgUrl,
-               Map(
-                 ("type", List("observation", "error", "heartbeat")),
-                 ("deviceId", List("d1", "d2", "d3", "d4")),
-                 ("module", List("temp1", "temp2", "waterLvl1")),
-                 ("value", List("24.0", "20.8", "19.0", "68.1"))
-               ))
+      StConfig(
+        100,
+        stgUrl,
+        Map(
+          ("type", List("observation", "error", "heartbeat")),
+          ("deviceId", List("d1", "d2", "d3", "d4")),
+          ("module", List("temp1", "temp2", "waterLvl1")),
+          ("value", List("24.0", "20.8", "19.0", "68.1"))
+        )
+      )
 
-    val connector: ActorRef = actorSystem.actorOf(StConnector.props)
-
-    val src = StSource(connector)
+    val src = StSource()
     val r: Future[Done] = src.runWith(consumer)
 
     Await.result(r, 10 seconds)

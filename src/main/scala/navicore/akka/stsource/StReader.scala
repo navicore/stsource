@@ -1,4 +1,4 @@
-package onextent.akka.stsource
+package navicore.akka.stsource
 
 import org.stringtemplate.v4.{ST, STGroupFile}
 

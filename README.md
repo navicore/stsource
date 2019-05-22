@@ -12,7 +12,7 @@ update your `build.sbt` dependencies with:
 
 ```scala
 // https://mvnrepository.com/artifact/tech.navicore/stsource
-libraryDependencies += "tech.navicore" %% "stsource" % "1.0.0"
+libraryDependencies += "tech.navicore" %% "stsource" % "1.1.0"
 ```
 
 Use any ST group file - assuming `UTF8` and '<' '>' delimiters.  For example, `/iotjson.stg`:

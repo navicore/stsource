@@ -26,7 +26,7 @@ libraryDependencies ++=
 
     "org.antlr" % "stringtemplate" % "4.0.2",
 
-    "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
+    "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
 
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,

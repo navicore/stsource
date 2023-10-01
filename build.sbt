@@ -3,7 +3,7 @@ organization := "tech.navicore"
 fork := true
 parallelExecution in test := false
 
-val akkaVersion = "2.8.4"
+val akkaVersion = "2.8.5"
 val scala212 = "2.12.7"
 val scala211 = "2.11.12"
 

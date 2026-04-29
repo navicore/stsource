@@ -1,3 +1,8 @@
+<!-- ghmig:moved -->
+> **This repository has moved to [https://git.navicore.tech/navicore/stsource](https://git.navicore.tech/navicore/stsource).**
+>
+> The GitHub copy is archived and no longer maintained.
+
 [![Build Status](https://travis-ci.org/navicore/stsource.svg?branch=master)](https://travis-ci.org/navicore/stsource)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/958b74b9d6d1441d8314d2468383dda7)](https://app.codacy.com/app/navicore/stsource?utm_source=github.com&utm_medium=referral&utm_content=navicore/stsource&utm_campaign=Badge_Grade_Settings)
 
